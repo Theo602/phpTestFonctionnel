@@ -65,7 +65,7 @@ class DiaryController extends AbstractController
             $entityManager->persist($foodRecord);
             $entityManager->flush();
 
-            $this->addFlash('success', $translator->trans('logEntry.add').'.');
+            $this->addFlash('success', $translator->trans('logEntry.added') . '.');
 
             return $this->redirectToRoute('add-new-record');
         }
@@ -78,7 +78,7 @@ class DiaryController extends AbstractController
     public function deleteRecordAction(Request $request, CsrfTokenManagerInterface $tokenManager, EntityManagerInterface $entityManager, TranslatorInterface $translator): RedirectResponse
     {
         if (!$record = $entityManager->getRepository(FoodRecord::class)->findOneById($request->request->get('record_id'))) {
-            $this->addFlash('danger', $translator->trans('Log entry does not exist').'.');
+            $this->addFlash('danger', $translator->trans('Log entry does not exist') . '.');
 
             return $this->redirectToRoute('diary');
         }
@@ -89,9 +89,9 @@ class DiaryController extends AbstractController
             $entityManager->remove($record);
             $entityManager->flush();
 
-            $this->addFlash('success', $translator->trans('logEntry.added').'.');
+            $this->addFlash('success', $translator->trans('logEntry.added') . '.');
         } else {
-            $this->addFlash('error', $translator->trans('An error has occurred').'.');
+            $this->addFlash('error', $translator->trans('An error has occurred') . '.');
         }
 
         return $this->redirectToRoute('diary');
@@ -101,7 +101,8 @@ class DiaryController extends AbstractController
     public function caloriesStatusAction(Diary $diary): Response
     {
         return $this->render(
-            'diary/caloriesStatus.html.twig',[
+            'diary/caloriesStatus.html.twig',
+            [
                 'remainingCalories' => $diary->getDailyRemainingCalories($this->getUser(), new Datetime()),
                 'maxCalories' => User::MAX_ADVICED_DAILY_CALORIES
             ]
